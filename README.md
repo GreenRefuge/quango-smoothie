@@ -5,7 +5,7 @@ This repo can be used as a starting point for [Django](https://www.djangoproject
 - `tyfyc_backend` is a minimal Django app created with the `django-admin startproject` command (uses the default `SQLite` for storage)
 - `tyfyc_frontend` is a minimal Quasar app created with the `quasar create` command (base installation)
 
-## :hourglass: Building
+## :hourglass_flowing_sand: Building
 `docker-compose build`
 
 ## :rocket: Running
