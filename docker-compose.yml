@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+    
+    django_app:
+        build: ./build/django_app
+        volumes:
+            - ./mount/django_app:/home/user/app_src
+            - ./mount/database:/home/user/database
+        ports:
+            - 127.0.0.1:8000:8000
+    
+    quasar_app:
+        build: ./build/quasar_app
+        volumes:
+            - ./mount/quasar_app:/home/node/node_app/app_src
+        ports:
+            - 127.0.0.1:8080:8080
