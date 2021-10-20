@@ -24,7 +24,9 @@ RUN \
 	python3 -m venv venv_django \
 	&& . venv_django/bin/activate \
 	&& pip install --upgrade pip \
-	&& pip install Django==3.2.8 \
+	&& pip install \
+		Django==3.2.8 \
+		gunicorn==20.1.0 uvicorn[standard]==0.15.0 \
 	&& deactivate
 
 
@@ -34,7 +36,8 @@ USER root
 COPY start.sh .
 RUN chmod 700 start.sh && chown ${U_ID}:${G_ID} start.sh
 RUN mkdir app_src && chown -R ${U_ID}:${G_ID} app_src
-
+# Volumes shared across containers
+RUN mkdir /tmp/staticfiles /tmp/shared_sockets && chown -R ${U_ID}:${G_ID} /tmp/staticfiles /tmp/shared_sockets
 
 USER ${U_NAME}
 

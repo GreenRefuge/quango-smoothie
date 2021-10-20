@@ -31,7 +31,7 @@ COPY start.sh /home/${U_NAME}/start.sh
 RUN \
 	chown ${U_NAME}:${G_NAME} /home/${U_NAME}/start.sh \
 	&& chmod 700 /home/${U_NAME}/start.sh
-RUN mkdir app_src && chown -R ${U_NAME}:${G_NAME} app_src
+RUN mkdir app_src app_dist && chown -R ${U_NAME}:${G_NAME} app_src app_dist
 
 
 USER ${U_NAME}

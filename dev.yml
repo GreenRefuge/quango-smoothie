@@ -9,13 +9,13 @@ services:
                 NGINX_AUTH_PASSWORD: testpw
         volumes:
             # NOTE must use literal "static" dir name here because otherwise requires URL strip/rewrite logic in conf
-            - docker_staticfiles:/tmp/django_files/static:ro
+            - docker_staticfiles:/tmp/django_files/static
             - shared_sockets:/tmp/shared_sockets
-            - quasar_dist:/tmp/quasar_dist:ro
+            - quasar_dist:/tmp/quasar_dist
         ports:
             - 127.0.0.1:80:80
             - 127.0.0.1:443:443
-        command: ["nginx", "-g", "daemon off;", "-c", "/etc/nginx/ng_prod.conf"]
+        command: ["nginx", "-g", "daemon off;", "-c", "/etc/nginx/ng_dev.conf"]
     
     django_app:
         build: ./build/django_app
@@ -24,6 +24,12 @@ services:
             - ./mount/database:/home/user/database
             - docker_staticfiles:/tmp/staticfiles
             - shared_sockets:/tmp/shared_sockets
+    
+    quasar_app:
+        build: ./build/quasar_app
+        volumes:
+            - ./mount/quasar_app:/home/node/node_app/app_src
+            - quasar_dist:/home/node/node_app/app_dist
 
 volumes:
     shared_sockets: {}
