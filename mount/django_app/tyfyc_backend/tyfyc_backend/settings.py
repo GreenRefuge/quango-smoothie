@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,10 +24,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-_=zys#sbitc5qyy6aurfgjz#%gmg3v=!xr9*86^^&bscfjxqvv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+is_dev_env = (os.environ['DJANGO_DEV_ENV'] == '1')
+
+try:
+    DEBUG = is_dev_env is True
+except KeyError:
+    # always fallback to "safer" choice if ENV is somehow missing
+    DEBUG = False
 
 ALLOWED_HOSTS = []
 
+if is_dev_env is False:
+    # NOTE about using wildcard here:
+    # - would be better to have more specific targeting
+    # - however: depends on knowing the production "server_name" ahead of time (e.g. "example.com") and passing that here
+    # - in this case, because Docker container has no direct port mappings to host, server process should be properly isolated within network
+    ALLOWED_HOSTS.append('*')
 
 # Application definition
 

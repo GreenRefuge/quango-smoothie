@@ -1,0 +1,10 @@
+version: "3.7"
+services:
+    
+    deploy_app:
+        build: ./build/deploy_app
+
+volumes:
+    shared_sockets: {}
+    docker_staticfiles: {}
+    quasar_dist: {}

@@ -2,50 +2,66 @@
 
 This repo can be used as a starting point for [Django](https://www.djangoproject.com/)+[Quasar](https://quasar.dev/)-based projects, using [Docker Compose](https://github.com/docker/compose) for container orchestration.
 
-- `./mount/django_app/tyfyc_backend` is a minimal Django app created with the `django-admin startproject` command (uses the default `SQLite` for storage)
-- `./mount/quasar_app/tyfyc_frontend` is a minimal Quasar app created with the `quasar create` command (base installation)
+`./mount/django_app/tyfyc_backend` is:
+- a minimal Django app created with the `django-admin startproject` command (uses the default `SQLite` for storage)
+
+`./mount/quasar_app/tyfyc_frontend` is:
+- a minimal Quasar app created with the `quasar create` command (base installation)
 
 [NGINX](https://www.nginx.com/) is used as a reverse proxy in both Development and Production environments in order to:
 
-- provide HTTPS support
-- serve Django static files
-- provide proper routing depending on environment context
+- provide centralized HTTPS termination
+- serve static files (Django static files and Quasar build artifacts)
+- facilitate environment-dependent routing
+
+## :sunrise: Setup
 
 
-## Getting Started
+### Download Project
 ```console
 $ git clone https://github.com/GreenRefuge/tyfyc_starter.git
-$ cd tyfyc_starter
+$ cd tyfyc_starter 
 ```
 
-## :hourglass_flowing_sand: Building Environment
 
-### Development
+### Build Development Images
 ```console
 $ docker-compose -f dev.yml build
 ```
-### Production
+
+
+#### *(optional)* Build Production Images
+**NOTE**: it is not necessary to do this in a local/dev environment, but can be done for testing purposes
 ```console
-$ docker-compose build
+$ docker-compose -f prod.yml build
 ```
 
-## Running Development Server(s)
+#### *(optional)* Build Deployment Image
+**NOTE**: deployment process is containerized here in order to:
+  - standardize setup of remote/production server
+  - avoid additional setup in host environment
+  - facilitate interaction with build artifacts of dev environment
 ```console
-docker-compose -f dev.yml up
+$ docker-compose -f deploy.yml build
 ```
 
-## Building Quasar Frontend
-```console
-docker-compose -f dev.yml run --rm quasar_app /bin/bash -c "cd app_src/tyfyc_frontend && npx quasar build"
-```
 
-## :rocket: Running Production Server(s)
-**NOTE: must do the "Building Quasar Frontend" step before this**
-```console
-$ docker-compose up
-```
 
-- The application can be loaded at `https://127.0.0.1`
+## :computer: Developing
+
+
+### Running Development Containers
+```console
+$ docker-compose -f dev.yml up
+```
+The application can be accessed at `https://127.0.0.1`
+- **Live Auto Reloading**
+  - the Quasar dev server will watch for file changes under `./mount/quasar_app/tyfyc_frontend`
+  - the Django server will watch for file changes under `./mount/django_app/tyfyc_backend`
+  - changes to settings-related things (like `quasar.conf.js` or `settings.py`) will require a restart of the container
+  - changes to package-related things (like `package.json`) will require a rebuild of the container image
+
+
 
 ## :book: Notes
 - things under the `./build` directory are used during container build(s) only

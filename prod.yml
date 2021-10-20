@@ -4,11 +4,8 @@ services:
     nginx_app:
         build:
             context: ./build/nginx_app
-            args:
-                NGINX_AUTH_USER: testuser
-                NGINX_AUTH_PASSWORD: testpw
         volumes:
-            # NOTE must use literal "static" dir name here because otherwise requires URL strip/rewrite logic in conf
+            # NOTE must use literal "static" dir name here because otherwise requires URL strip/rewrite logic in nginx conf
             - docker_staticfiles:/tmp/django_files/static:ro
             - shared_sockets:/tmp/shared_sockets
             - quasar_dist:/tmp/quasar_dist:ro
@@ -24,6 +21,8 @@ services:
             - ./mount/database:/home/user/database
             - docker_staticfiles:/tmp/staticfiles
             - shared_sockets:/tmp/shared_sockets
+        environment:
+            - DJANGO_DEV_ENV=0
 
 volumes:
     shared_sockets: {}

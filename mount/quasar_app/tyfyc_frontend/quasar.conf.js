@@ -76,6 +76,11 @@ module.exports = configure(function (ctx) {
       https: false,
       port: 8080,
       open: false, // opens browser window automatically
+
+      client: {
+        // provide explicitly here: in case default changes AND to remove assumed 'wss' from location (just use HTTP in dev mode)
+        webSocketURL: 'ws://127.0.0.1:8080/ws',
+      },
     },
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
