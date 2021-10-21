@@ -16,6 +16,9 @@ RUN \
 
 WORKDIR /home/${U_NAME}
 
+COPY requirements.txt .
+RUN chown ${U_ID}:${G_ID} requirements.txt
+
 
 
 USER ${U_NAME}
@@ -23,10 +26,8 @@ USER ${U_NAME}
 RUN \
 	python3 -m venv venv_django \
 	&& . venv_django/bin/activate \
-	&& pip install --upgrade pip \
-	&& pip install \
-		Django==3.2.8 \
-		gunicorn==20.1.0 uvicorn[standard]==0.15.0 \
+	&& pip install --no-cache-dir --upgrade pip \
+	&& pip install --no-cache-dir -r requirements.txt \
 	&& deactivate
 
 

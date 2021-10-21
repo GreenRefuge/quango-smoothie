@@ -5,10 +5,11 @@ services:
         build:
             context: ./build/nginx_app
         volumes:
+            # NOTE: using ":ro" mounts here to protect static files from ever being modified from within NGINX container
             # NOTE must use literal "static" dir name here because otherwise requires URL strip/rewrite logic in nginx conf
-            - docker_staticfiles:/tmp/django_files/static:ro
+            - django_staticfiles:/tmp/django_files/static:ro
+            - quasar_dist:/tmp/quasar_files:ro
             - shared_sockets:/tmp/shared_sockets
-            - quasar_dist:/tmp/quasar_dist:ro
         ports:
             - 127.0.0.1:80:80
             - 127.0.0.1:443:443
@@ -19,12 +20,13 @@ services:
         volumes:
             - ./mount/django_app:/home/user/app_src
             - ./mount/database:/home/user/database
-            - docker_staticfiles:/tmp/staticfiles
+            # NOTE: avoid mounting this in Production (because files _should_ already be in correct place)
+            #- django_staticfiles:/tmp/staticfiles
             - shared_sockets:/tmp/shared_sockets
         environment:
             - DJANGO_DEV_ENV=0
 
 volumes:
     shared_sockets: {}
-    docker_staticfiles: {}
+    django_staticfiles: {}
     quasar_dist: {}

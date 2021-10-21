@@ -17,5 +17,11 @@ RUN \
 WORKDIR /home/${U_NAME}
 
 
+COPY start.sh .
+RUN chmod 700 start.sh && chown ${U_ID}:${G_ID} start.sh
+RUN mkdir project_dir deploy_dist django_staticfiles quasar_dist && chown -R ${U_ID}:${G_ID} project_dir deploy_dist django_staticfiles quasar_dist
+
 
 USER ${U_NAME}
+
+CMD ["/home/user/start.sh"]

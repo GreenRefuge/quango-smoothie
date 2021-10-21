@@ -140,6 +140,7 @@ STATIC_ROOT = '/tmp/staticfiles/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# necessary for ensuring HTTP is _always_ redirected to HTTPS (and plays nicely with reverse proxy)
-SECURE_SSL_REDIRECT = True
+
+#SECURE_SSL_REDIRECT = True
+# in any case (redirect is setup or not), define this header for compat with NGINX
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

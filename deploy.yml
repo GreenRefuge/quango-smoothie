@@ -3,8 +3,15 @@ services:
     
     deploy_app:
         build: ./build/deploy_app
+        volumes:
+            # NOTE: read-only here to ensure container cannot modify files in project/repo directory
+            - .:/home/user/project_dir:ro
+            - ./mount/deploy_app:/home/user/deploy_dist
+            
+            - django_staticfiles:/home/user/django_staticfiles
+            - quasar_dist:/home/user/quasar_dist
 
 volumes:
-    shared_sockets: {}
-    docker_staticfiles: {}
+    #shared_sockets: {}
+    django_staticfiles: {}
     quasar_dist: {}

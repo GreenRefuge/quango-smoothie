@@ -37,7 +37,7 @@ COPY ng_prod.conf /etc/nginx/
 COPY ng_dev.conf /etc/nginx/
 
 # Volumes shared across containers
-RUN mkdir -p /tmp/django_files/static /tmp/shared_sockets /tmp/quasar_dist && chown -R ${NGINX_USER_NAME}:${NGINX_USER_NAME} /tmp/django_files /tmp/shared_sockets /tmp/quasar_dist
+RUN mkdir -p /tmp/django_files/static /tmp/shared_sockets /tmp/quasar_files && chown -R ${NGINX_USER_NAME}:${NGINX_USER_NAME} /tmp/django_files /tmp/shared_sockets /tmp/quasar_files
 
 USER ${NGINX_USER_NAME}
 
