@@ -95,7 +95,10 @@ $ docker-compose -f dev.yml run --rm quasar_app /bin/bash -c "cd app_src/tyfyc_f
 - The build artifacts will now be located in the `quasar_dist` Docker named volume
 
 
-### 1.5 *(optional) Test Production locally (in-place)*
+### 1.5 *(optional) Test Production build in-place*
+- :information_source: make sure to provide your own config/secrets in `./config/prod`
+  - you can just copy all the files under `./config/dev` if you want to mirror the Development config/secrets
+  - these will _not_ be included by "pack" script (see Step 3) and are ignored by `.gitignore`
 ```
 $ docker-compose -f prod.yml up
 ```
