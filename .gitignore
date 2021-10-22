@@ -1,4 +1,8 @@
 *.pyc
 *.sqlite3
 
-prod.tar.gz
+# ignore build/pack output
+prod_*.tar.gz
+
+# ensures will _never_ commit Production secrets
+/config/prod/*.txt

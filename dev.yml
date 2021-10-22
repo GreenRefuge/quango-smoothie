@@ -23,6 +23,8 @@ services:
             - shared_sockets:/tmp/shared_sockets
         environment:
             - DJANGO_DEV_ENV=1
+        secrets:
+            - django_secret_key
     
     quasar_app:
         build: ./build/quasar_app
@@ -36,3 +38,7 @@ volumes:
     shared_sockets: {}
     django_staticfiles: {}
     quasar_dist: {}
+
+secrets:
+    django_secret_key:
+        file: ./config/dev/django_secret_key.txt

@@ -95,7 +95,7 @@ $ docker-compose -f dev.yml run --rm quasar_app /bin/bash -c "cd app_src/tyfyc_f
 - The build artifacts will now be located in the `quasar_dist` Docker named volume
 
 
-### 1.5 *(optional) Test Production locally*
+### 1.5 *(optional) Test Production locally (in-place)*
 ```
 $ docker-compose -f prod.yml up
 ```
@@ -111,11 +111,14 @@ This will create a minimal archive for easy deployment:
 ```console
 $ docker-compose -f deploy.yml run --rm deploy_app
 ```
-- The generated `prod.tar.gz` file will now be located in `./mount/deploy_app`
+- The generated `prod_[TIMESTAMP].tar.gz` file will now be located in `./mount/deploy_app`
 
 
 ### 3. :tada: Move, Build, Up
-- Move and extract `prod.tar.gz` to somewhere on your Production server
+- Move and extract `prod_[TIMESTAMP].tar.gz` to somewhere on your Production server
+  - :key: **IMPORTANT** you must provide your own config/secrets
+    - these will be `.txt` files under `./config/prod`
+    - use `./config/dev` as a reference (just copy each file, replacing the contents with your own config)
 - `docker-compose build`
 - `docker-compose up`
 
@@ -158,6 +161,6 @@ NGINX matches URLs according to the following rules:
 
 
 ### Django Server
-- [Uvicorn](https://www.uvicorn.org/) is used to serve the Django app within its container
+- [Uvicorn](https://www.uvicorn.org/) is used to serve the Django project within its container
   - the server is bound to a Unix domain socket, which is exposed to the NGINX container via shared volume
   - in Production mode, [Gunicorn](https://gunicorn.org/) is used to "drive" Uvicorn (as is [recommended](https://www.uvicorn.org/deployment/) by the docs)

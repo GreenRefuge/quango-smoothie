@@ -5,16 +5,18 @@ set -e
 PROJECT_DIR=/home/user/project_dir
 DJANGO_STATIC_DIR=/home/user/django_staticfiles
 QUASAR_DIST_DIR=/home/user/quasar_dist
+
+OUTPUT_DIR=/home/user/deploy_dist
+BUILD_TEMP_DIR=/tmp/prod
 #============================#
 
-cd ./deploy_dist
+source ~/venv_pack/bin/activate
 
 #============================#
-# NOTE: remove any existing 'prod' here (should be cleaned up on exit...)
-rm -rf ./prod || true
+# NOTE: this temp dir is re-created on each run (_not_ mounted to host)
 
-mkdir ./prod
-cd ./prod
+mkdir $BUILD_TEMP_DIR
+cd $BUILD_TEMP_DIR
 
 mkdir ./build
 
@@ -26,6 +28,9 @@ mkdir ./static_files/django
 mkdir ./mount
 mkdir ./mount/database
 mkdir ./mount/django_app
+
+mkdir ./config
+mkdir ./config/prod
 #============================#
 
 #============================#
@@ -80,6 +85,10 @@ sed -i 's/quasar_dist/\.\/static_files\/quasar/g' ./docker-compose.yml
 # handle Django source files
 
 cp -r $PROJECT_DIR/mount/django_app/* ./mount/django_app
+# NOTE: now _remove_ all: *.pyc/pyo files, "__pycache__" directories
+pyclean ./mount/django_app &> /tmp/output_pyclean.txt
+# NOTE: can inspect output of this command if desired
+#cat /tmp/output_pyclean.txt
 #============================#
 
 #============================#
@@ -92,17 +101,13 @@ cp -r $PROJECT_DIR/mount/django_app/* ./mount/django_app
 #============================#
 # Finally: package "prod" directory into single file
 
-# remove any existing file here
-rm ../prod.tar.gz || true
+# NOTE: append timestamp to filename so don't have to worry about overwriting existing here
+# - also: not a bad idea to have some "canonical" Production archive to be able to point to anyway
+date_tstamp=$(date +%s)
 
-tar -czf ../prod.tar.gz .
+tar -czf $OUTPUT_DIR/prod_${date_tstamp}.tar.gz .
 #============================#
 
-#============================#
-# cleanup temp files
-
-cd ..
-rm -rf ./prod || true
-#============================#
+# all temp files will be removed when Container is removed
 
 echo "Done."

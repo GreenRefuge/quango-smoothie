@@ -25,8 +25,14 @@ services:
             - shared_sockets:/tmp/shared_sockets
         environment:
             - DJANGO_DEV_ENV=0
+        secrets:
+            - django_secret_key
 
 volumes:
     shared_sockets: {}
     django_staticfiles: {}
     quasar_dist: {}
+
+secrets:
+    django_secret_key:
+        file: ./config/prod/django_secret_key.txt

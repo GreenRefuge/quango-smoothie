@@ -3,7 +3,7 @@ FROM debian:10.11
 RUN \
 	apt-get update \
 	&& apt-get install -y --no-install-recommends \
-		rsync \
+		python3-dev python3-venv \
 	&& rm -rf /var/lib/apt/lists/*
 
 ARG U_NAME="user"
@@ -17,9 +17,24 @@ RUN \
 WORKDIR /home/${U_NAME}
 
 
+
+USER ${U_NAME}
+
+RUN \
+	python3 -m venv venv_pack \
+	&& . venv_pack/bin/activate \
+	&& pip install --no-cache-dir --upgrade pip \
+	&& pip install --no-cache-dir pyclean \
+	&& deactivate
+
+
+
+USER root
+
 COPY start.sh .
 RUN chmod 700 start.sh && chown ${U_ID}:${G_ID} start.sh
 RUN mkdir project_dir deploy_dist django_staticfiles quasar_dist && chown -R ${U_ID}:${G_ID} project_dir deploy_dist django_staticfiles quasar_dist
+
 
 
 USER ${U_NAME}
