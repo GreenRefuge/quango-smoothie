@@ -1,13 +1,13 @@
-# TYFYC Starter
+# Quango Smoothie
 
 This repo can be used as a starting point for [Django](https://www.djangoproject.com/)+[Quasar](https://quasar.dev/)-based projects, using [Docker Compose](https://github.com/docker/compose) for container orchestration.
 
 
 ### Pre-generated apps
-`./mount/django_app/tyfyc_backend` is:
+`./mount/django_app/quango_backend` is:
 - a minimal Django app created with the `django-admin startproject` command (uses the default `SQLite` for storage)
 
-`./mount/quasar_app/tyfyc_frontend` is:
+`./mount/quasar_app/quango_frontend` is:
 - a minimal Quasar app created with the `quasar create` command (base installation)
 
 
@@ -30,8 +30,8 @@ This repo can be used as a starting point for [Django](https://www.djangoproject
 
 ### Download Project
 ```console
-$ git clone https://github.com/GreenRefuge/tyfyc_starter.git
-$ cd tyfyc_starter 
+$ git clone https://github.com/GreenRefuge/quango-smoothie.git
+$ cd quango-smoothie
 ```
 
 
@@ -70,8 +70,8 @@ The application can be accessed at `https://127.0.0.1`
   - `DEBUG=True` is enabled in `settings.py`
   - `collectstatic` command is run before server start
 - **Live Auto Reloading**
-  - the Quasar dev server will watch for file changes under `./mount/quasar_app/tyfyc_frontend`
-  - the Django dev server will watch for file changes under `./mount/django_app/tyfyc_backend`
+  - the Quasar dev server will watch for file changes under `./mount/quasar_app/quango_frontend`
+  - the Django dev server will watch for file changes under `./mount/django_app/quango_backend`
   - :warning: changes to settings-related things (e.g. `quasar.conf.js` or `settings.py`) will possibly require a restart of the container
   - :warning: changes to package-related things (e.g. `package.json` or `requirements.txt`) will likely require a rebuild of the container image
 
@@ -83,14 +83,14 @@ The application can be accessed at `https://127.0.0.1`
 ### 0. Collect Django static files
 :information_source: *This step is only necessary if you have never run the Development containers, or static files changed since the last run*
 ```console
-$ docker-compose -f dev.yml run --rm django_app /bin/bash -c ". ~/venv_django/bin/activate && cd /home/user/app_src/tyfyc_backend && python manage.py collectstatic --noinput"
+$ docker-compose -f dev.yml run --rm django_app /bin/bash -c ". ~/venv_django/bin/activate && cd /home/user/app_src/quango_backend && python manage.py collectstatic --noinput"
 ```
 - The static files will now be located in the `django_staticfiles` Docker named volume
 
 
 ### 1. Build Quasar app
 ```console
-$ docker-compose -f dev.yml run --rm quasar_app /bin/bash -c "cd app_src/tyfyc_frontend && npx quasar build"
+$ docker-compose -f dev.yml run --rm quasar_app /bin/bash -c "cd app_src/quango_frontend && npx quasar build"
 ```
 - The build artifacts will now be located in the `quasar_dist` Docker named volume
 
@@ -134,7 +134,7 @@ $ docker-compose -f deploy.yml run --rm deploy_app
 - things under the `./build` directory are used during container build(s) only
 - things under the `./mount` directory are mounted within the container(s) during runtime
 - on first run, Django creates a file `db.sqlite3` in the (host-mounted) `./mount/databases` directory
-- on each run, a symbolic link `node_modules` is created in the (host-mounted) `./mount/quasar_app/tyfyc_frontend` directory
+- on each run, a symbolic link `node_modules` is created in the (host-mounted) `./mount/quasar_app/quango_frontend` directory
 
 
 ### URL Routing

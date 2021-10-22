@@ -1,4 +1,4 @@
-# Quasar App (tyfyc_frontend)
+# Quasar App (quango_frontend)
 
 A Quasar Framework app
 
